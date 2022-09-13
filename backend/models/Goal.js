@@ -27,3 +27,5 @@ const goalSchema = new Schema({
   },
   exercise: [{ type: Schema.Types.ObjectId, ref: "Exercise" }]
 })
+
+module.exports = mongoose.model("Goal", goalSchema)
