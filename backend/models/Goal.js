@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const goalSchema = new Schema({
   goal_type: {
     type: String,
-    enum: ["frequency, time"],
+    enum: ["frequency", "time"],
     required: true
   },
   time: {

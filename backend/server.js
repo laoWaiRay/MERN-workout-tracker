@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
 const exerciseRoutes = require("./routes/exercises");
 const workoutRoutes = require("./routes/workouts");
+const goalRoutes = require("./routes/goals");
 
 // Configure dependencies
 const app = express();
@@ -20,6 +21,7 @@ app.use(morgan("dev"));
 app.use("/api/user", userRoutes);
 app.use("/api/exercise", exerciseRoutes);
 app.use("/api/workout", workoutRoutes);
+app.use("/api/goals", goalRoutes);
 
 // Connect to MongoDB Atlas
 mongoose.connect(process.env.ATLAS_URI)

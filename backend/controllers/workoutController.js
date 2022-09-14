@@ -9,8 +9,11 @@ exports.listWorkouts = (req, res, next) => {
     .populate("exercise")
     .sort({ createdAt: -1 })
     .exec(function(err, workouts) {
-      if (err) { return next(err) };
-      res.json(workouts)
+      if (err) { 
+        res.status(400).json({ error: "Could not find workouts" })
+        return next(err) 
+      };
+      res.status(200).json(workouts)
     })
 }
 
@@ -61,6 +64,10 @@ exports.updateWorkout = async (req, res, next) => {
   const user_id = req.user._id;
   const _id = req.params.id;
   const { exercise } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({ error: "Invalid ID" })
+  }
 
   if (!exercise) {
     res.status(400).json("Must choose an exercise")
