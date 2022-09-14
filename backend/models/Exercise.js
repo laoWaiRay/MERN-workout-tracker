@@ -5,11 +5,15 @@ const Schema = mongoose.Schema;
 
 const exerciseSchema = new Schema({
   name: {
-    type: String,
-    unique: true
+    type: String
   },
   color: {
-    type: String
+    type: String,
+    required: true
+  },
+  user_id: {
+    type: String,
+    required: true
   }
 })
 

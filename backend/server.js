@@ -4,6 +4,10 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 
+const userRoutes = require("./routes/user");
+const exerciseRoutes = require("./routes/exercises");
+const workoutRoutes = require("./routes/workouts");
+
 // Configure dependencies
 const app = express();
 dotenv.config();
@@ -13,7 +17,9 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Route handling middleware
-
+app.use("/api/user", userRoutes);
+app.use("/api/exercise", exerciseRoutes);
+app.use("/api/workout", workoutRoutes);
 
 // Connect to MongoDB Atlas
 mongoose.connect(process.env.ATLAS_URI)
