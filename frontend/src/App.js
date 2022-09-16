@@ -14,7 +14,7 @@ function App() {
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/" element={user ? <Home username={user.username}/> : <Navigate to="/login" />}></Route>
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />}></Route>
           <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" />}></Route>
         </Routes>

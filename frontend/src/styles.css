@@ -1,9 +1,11 @@
 :root {
   --main-color: #2f91d2;
+  --main-color-light: #c4deea;
   --light-grey: #e7e7e7;
   --white: #f3eded;
   --secondary-color: #3c6e71;
   --grey: #353535;
+  --danger: #f62323;
 }
 
 html {
@@ -57,10 +59,6 @@ header h1 {
   color: var(--secondary-color);
 }
 
-main {
-  padding: 1.6rem 2rem;
-}
-
 footer {
   margin-top: auto;
   display: flex;
@@ -82,7 +80,14 @@ footer a {
 .container {
   display: flex;
   justify-content: center;
-  /* background-color: orchid; */
+  padding: 1.6rem 2rem;
+}
+
+.container-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.6rem 2rem;
 }
 
 form.signup, form.login {
@@ -134,10 +139,99 @@ form h1 {
 }
 
 .chart-container {
-  height: 80rem;
   width: 80rem;
 }
 
 .chart-container h1 {
   text-align: center;
+}
+
+.error {
+  color: var(--danger);
+  position: relative;
+}
+
+.sub-header {
+  background-color: var(--main-color-light);
+  padding: 1rem 2rem;
+}
+
+.table {
+  width: 100%;
+  max-width: 1000px;
+  padding-top: 2rem;
+  /* background-color: pink; */
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+}
+
+.table-header button {
+  display: flex;
+  align-items: center;
+  border: 0;
+  background-color: transparent;
+  font-size: 2rem;
+  margin-left: 1rem;
+  border-radius: 4px;
+  padding: 1rem;
+  color: var(--main-color)
+}
+
+.table-header button > span {
+  padding-right: .5rem;
+}
+
+.table-header button:hover {
+  cursor: pointer;
+}
+
+.table table {
+  width: 100%;
+  font-size: 1.8rem;
+  border-collapse: collapse;
+}
+
+.table table th, .table table td {
+  padding: 1rem;
+}
+
+.table table thead {
+  background-color: var(--main-color-light);
+}
+
+.table table th {
+  text-align: left;
+}
+
+td.options {
+  max-width: 2rem;
+}
+
+td.options button {
+  border: 0;
+  background-color: transparent;
+  margin-left: 1rem;
+}
+
+td.options button:hover {
+  cursor: pointer;
+}
+
+/* Google Material Icons */
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.material-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
