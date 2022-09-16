@@ -1,0 +1,143 @@
+:root {
+  --main-color: #2f91d2;
+  --light-grey: #e7e7e7;
+  --white: #f3eded;
+  --secondary-color: #3c6e71;
+  --grey: #353535;
+}
+
+html {
+  /* 16px / 10 = 0.625 */
+  /* 1 rem = 10px */
+  font-size: 62.5%;  
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.6rem;
+  background-color: var(--light-grey);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+header {
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.6rem 2rem;
+}
+
+header h1 {
+  margin: 0;
+  color: var(--main-color);
+}
+
+.nav-container a {
+  font-size: 2rem;
+  margin-left: 2rem;
+  color: var(--secondary-color)
+}
+
+.nav-container button {
+  font-size: 2rem;
+  margin-left: 2rem;
+  background-color: transparent;
+  border: 0;
+  color: var(--secondary-color);
+}
+
+main {
+  padding: 1.6rem 2rem;
+}
+
+footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  padding-bottom: .5rem;
+}
+
+footer a {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+.footer-text {
+  border-top: 1px solid var(--secondary-color);
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  /* background-color: orchid; */
+}
+
+form.signup, form.login {
+  background-color: var(--white);
+  width: 50rem;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
+form label {
+  display: block;
+  padding: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+input, button {
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  padding: .5rem;
+}
+
+form button {
+  display: block;
+  margin: 2.5rem auto;
+  padding: 1.4rem 2rem;
+  background-color: var(--main-color);
+  color: var(--white);
+  border: 0;
+  border-radius: 4px;
+}
+
+form button:hover {
+  cursor: pointer;
+}
+
+form h1 {
+  margin-bottom: 1rem;
+}
+
+.chart-container {
+  height: 80rem;
+  width: 80rem;
+}
+
+.chart-container h1 {
+  text-align: center;
+}
