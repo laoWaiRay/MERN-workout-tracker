@@ -1,8 +1,8 @@
 :root {
   --main-color: #2f91d2;
   --main-color-light: #c4deea;
-  --light-grey: #e7e7e7;
-  --white: #f3eded;
+  --light-grey: #f4f3f3;
+  --white: #ffffff;
   --secondary-color: #3c6e71;
   --grey: #353535;
   --danger: #f62323;
@@ -19,7 +19,7 @@ body {
   margin: 0;
   font-family: 'Lato', sans-serif;
   font-size: 1.6rem;
-  background-color: var(--light-grey);
+  background-color: var(--white);
 }
 
 #root {
@@ -83,6 +83,10 @@ footer a {
   padding: 1.6rem 2rem;
 }
 
+/* .exercises-container {
+justify-content: space-between;
+} */
+
 .container-home {
   display: flex;
   flex-direction: column;
@@ -90,14 +94,18 @@ footer a {
   padding: 1.6rem 2rem;
 }
 
-form.signup, form.login {
-  background-color: var(--white);
+form.signup, form.login, form.exercises {
+  background-color: var(--light-grey);
   width: 50rem;
   justify-content: center;
   margin-top: 2rem;
   padding: 2rem;
   border-radius: 6px;
   text-align: center;
+}
+
+form.exercises {
+  width: 30rem;
 }
 
 form label {
@@ -118,6 +126,16 @@ input, button {
   font-family: inherit;
   font-weight: inherit;
   padding: .5rem;
+}
+
+input {
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+  transition: border 300ms;
+}
+
+input:hover {
+  border: 1px solid #aaa;
 }
 
 form button {
@@ -163,6 +181,16 @@ form h1 {
   /* background-color: pink; */
 }
 
+.exercises-table {
+  width: 70%;
+  max-width: 1000px;
+  margin-left: 2rem;
+}
+
+.exercises-table h2 {
+  margin-top: 0;
+}
+
 .table-header {
   display: flex;
   align-items: center;
@@ -177,7 +205,11 @@ form h1 {
   margin-left: 1rem;
   border-radius: 4px;
   padding: 1rem;
-  color: var(--main-color)
+  color: var(--main-color);
+}
+
+.table-header .button-wrapper {
+  position: relative;
 }
 
 .table-header button > span {
@@ -206,11 +238,13 @@ form h1 {
   text-align: left;
 }
 
-td.options {
-  max-width: 2rem;
+td.options, th.options {
+  display: table-cell;
+  width: 100px;
 }
 
 td.options button {
+  display: inline-block;
   border: 0;
   background-color: transparent;
   margin-left: 1rem;
@@ -234,4 +268,55 @@ td.options button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.popup {
+  position: absolute;
+  right: -32rem;
+  bottom: 1rem;
+  border-radius: 4px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: var(--white);
+  padding: 1rem 0;
+  /* height: 40rem; */
+  /* width: 40rem; */
+}
+
+.popup form {
+  padding: 0 6rem;
+}
+
+.popup button {
+  margin: 3rem auto;
+  background-color: var(--main-color);
+  color: #fff; 
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #c8c8c8;
+}
+
+.close:hover {
+  cursor: pointer;
+  color: #aaa;
+}
+
+.username {
+  letter-spacing: .5px;
+}
+
+select {
+  padding: 1rem;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  border-radius: 4px;
+}
+
+option {
+  background-color: red;
 }
