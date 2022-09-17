@@ -20,7 +20,6 @@ export const AuthContextProvider = (props) => {
   })
 
   useEffect(() => {
-    console.log("effect 1")
     const user = JSON.parse(localStorage.getItem("user"))
 
     if (user) {

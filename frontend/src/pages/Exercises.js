@@ -122,7 +122,7 @@ export default function Exercises() {
     const result = await response.json()
 
     if (response.ok) {
-      console.log(result)
+      dispatch({ type: "CREATE_EXERCISE", payload: result })
     }
   }
 
@@ -132,7 +132,6 @@ export default function Exercises() {
 
   useEffect(() => {
     if (isLoaded) {
-      console.log("2")
       const token = user.token
       fetch("/api/exercise", {
         headers: {
@@ -140,10 +139,13 @@ export default function Exercises() {
         }
       })
       .then(response => response.json())
-      .then(result => {console.log(result)})
+      .then(result => {
+        console.log(result)
+        dispatch({ type: "SET_EXERCISES", payload: result })
+      })
       .catch(e => console.log(e))
     } 
-  }, [isLoaded, user])
+  }, [isLoaded, user, dispatch])
 
   return (
     <div className='container exercises-container'>
@@ -172,7 +174,7 @@ export default function Exercises() {
 
         <button>Add</button>
       </form>
-      <ExercisesTable />
+      <ExercisesTable exercises={exercises}/>
     </div>
   )
 }

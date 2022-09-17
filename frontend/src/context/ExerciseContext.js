@@ -6,7 +6,7 @@ export const exerciseReducer = (state, action) => {
   switch (action.type) {
     case "SET_EXERCISES":
       return {
-        exercises: action.paylaod
+        exercises: action.payload
       }
     case "CREATE_EXERCISE":
       return {

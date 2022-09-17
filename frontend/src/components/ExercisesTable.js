@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-export default function ExercisesTable() {
+export default function ExercisesTable({ exercises }) {
 
   return (
     <div className='table exercises-table'>
@@ -15,22 +15,21 @@ export default function ExercisesTable() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Squat</td>
-            <td className='options'>
-              <span>
-                <button><span className="material-symbols-outlined">edit</span></button>
-                <button><span className="material-symbols-outlined">delete</span></button>
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td>Deadlift</td>
-            <td className='options'>
-              <button><span className="material-symbols-outlined">edit</span></button>
-              <button><span className="material-symbols-outlined">delete</span></button>
-            </td>
-          </tr>
+          { exercises &&
+            exercises.map((exercise) => {
+              return (
+                <tr key={exercise._id}>
+                  <td>{exercise.name}</td>
+                  <td className='options'>
+                    <span>
+                      <button><span className="material-symbols-outlined">edit</span></button>
+                      <button><span className="material-symbols-outlined">delete</span></button>
+                    </span>
+                  </td>
+                </tr>
+              )
+            }) 
+          }
         </tbody>
       </table>
     </div>

@@ -9,7 +9,14 @@ import Signup from "./pages/Signup"
 import Exercises from "./pages/Exercises"
 
 function App() {
-  const { user } = useAuthContext();
+  const { user, isLoaded } = useAuthContext();
+  let token;
+
+  if (!isLoaded) {
+    token = JSON.parse(localStorage.getItem("user"))
+  } else {
+    token = null
+  }
 
   return (
     <BrowserRouter>
@@ -18,7 +25,10 @@ function App() {
           <Route path="/" element={user ? <Home /> : <Navigate to="/login" />}></Route>
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />}></Route>
           <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" />}></Route>
-          <Route path="/exercises" element={<Exercises />}></Route>
+          {/* user is initially set to null, and is only updated through a useEffect AFTER the
+              components are rendered, therefore on page refresh user will always be null
+          */}
+          <Route path="/exercises" element={user || token ? <Exercises /> : <Navigate to="/login" />}></Route>
         </Routes>
       </Layout>
     </BrowserRouter>

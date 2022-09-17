@@ -106,6 +106,11 @@ form.signup, form.login, form.exercises {
 
 form.exercises {
   width: 30rem;
+  margin-top: 0;
+}
+
+form.exercises h2 {
+  margin-top: 0;
 }
 
 form label {
@@ -184,6 +189,7 @@ form h1 {
 .exercises-table {
   width: 70%;
   max-width: 1000px;
+  padding-top: 0;
   margin-left: 2rem;
 }
 
