@@ -12,6 +12,12 @@ export const exerciseReducer = (state, action) => {
       return {
         exercises: [action.payload, ...state.exercises]
       }
+    case "UPDATE_EXERCISE":
+      const indexToUpdate = state.exercises.findIndex(exercise => exercise._id === action.payload._id)
+      state.exercises.splice(indexToUpdate, 1, action.payload);
+      return {
+        exercises: state.exercises
+      }
     case "DELETE_EXERCISE":
       const newState = state.exercises.filter(exercise => exercise._id !== action.payload._id)
       return {

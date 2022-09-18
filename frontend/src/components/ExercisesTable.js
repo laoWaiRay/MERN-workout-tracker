@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useExerciseContext } from '../hooks/useExerciseContext'
+import EditableRow from './EditableRow';
 
 export default function ExercisesTable({ exercises }) {
+  const { dispatch } = useExerciseContext()
 
   return (
     <div className='table exercises-table'>
@@ -18,15 +21,10 @@ export default function ExercisesTable({ exercises }) {
           { exercises &&
             exercises.map((exercise) => {
               return (
-                <tr key={exercise._id}>
-                  <td>{exercise.name}</td>
-                  <td className='options'>
-                    <span>
-                      <button><span className="material-symbols-outlined">edit</span></button>
-                      <button><span className="material-symbols-outlined">delete</span></button>
-                    </span>
-                  </td>
-                </tr>
+                <EditableRow 
+                  key={exercise._id}
+                  exercise={exercise}
+                />
               )
             }) 
           }

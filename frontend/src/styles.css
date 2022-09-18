@@ -326,3 +326,40 @@ select {
 option {
   background-color: red;
 }
+
+.editable-form {
+  margin: -2px 0;
+  display: flex;
+  align-items: center;
+}
+
+.editable-input {
+  padding: .5rem 0;
+  padding-left: 3px;
+  margin: 0;
+  position: relative;
+  left: -4px;
+}
+
+.editable-input-select {
+  display: inline-block;
+}
+
+.editable-input-select label, .editable-input-select label + * {
+  display: inline-block;
+}
+
+.editable-form-btn {
+  display: inline-block;
+  position: relative;
+  height: 100%;
+  padding: .8rem 1rem;
+  margin: 0;
+  margin-left: 2rem;
+  top: 1px;
+}
+
+.dot {
+  display: flex;
+  align-items: center;
+}
