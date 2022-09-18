@@ -4,11 +4,10 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import ColorSelect from './ColorSelect';
 import Dot from "../components/Dot"
 
-export default function EditableRow({ exercise }) {
+export default function EditableRow({ exercise, setError }) {
   const [isEdit, setIsEdit] = useState(false);
   const [name, setName] = useState(exercise.name)
   const [color, setColor] = useState(null);
-  const [error, setError] = useState(null);
   const { dispatch } = useExerciseContext()
   const { user } = useAuthContext()
 
@@ -17,12 +16,18 @@ export default function EditableRow({ exercise }) {
 
   const handleChange = (e) => {
     setName(e.target.value)
+    console.log(name)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
     const fetchData = async () => {
+      if (!name || !color) {
+        setError("Fields must not be empty")
+        return
+      }
+
       const response = await fetch("/api/exercise/" + exercise._id, {
         method: "PATCH",
         headers: {
@@ -39,11 +44,11 @@ export default function EditableRow({ exercise }) {
       } else {
         console.log(result)
         dispatch({ type: "UPDATE_EXERCISE", payload: result })
+        setIsEdit(false)
       }
     }
 
     fetchData()
-    setIsEdit(false)
   } 
 
   const handleClickEdit = () => {
@@ -67,8 +72,9 @@ export default function EditableRow({ exercise }) {
   }
 
   const handleClickOutside = (e) => {
+    console.log(name)
     const clickInMenu = e.target.id ? e.target.id.includes("react-select") : null
-    if (formRef.current && !editRef.current.contains(e.target) && !formRef.current.contains(e.target) && !clickInMenu) {
+    if (formRef.current && !name && !editRef.current.contains(e.target) && !formRef.current.contains(e.target) && !clickInMenu) {
       setIsEdit(false)
     }
   }
