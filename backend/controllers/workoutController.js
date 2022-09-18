@@ -39,14 +39,19 @@ exports.detailWorkout = (req, res, next) => {
 // Create a workout
 exports.createWorkout = (req, res, next) => {
   const user_id = req.user._id;
-  const { exercise } = req.body;
+  const { exercise, time } = req.body;
 
   if (!exercise) {
     res.status(400).json("Must choose an exercise")
   }
 
+  if (!time) {
+    res.status(400).json("Must input a time")
+  }
+
   const workout = new Workout({
     exercise,
+    time,
     user_id
   })
 
@@ -63,7 +68,7 @@ exports.createWorkout = (req, res, next) => {
 exports.updateWorkout = async (req, res, next) => {
   const user_id = req.user._id;
   const _id = req.params.id;
-  const { exercise } = req.body;
+  const { exercise, time } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(400).json({ error: "Invalid ID" })
@@ -71,6 +76,10 @@ exports.updateWorkout = async (req, res, next) => {
 
   if (!exercise) {
     res.status(400).json("Must choose an exercise")
+  }
+
+  if (!time) {
+    res.status(400).json("Must input a time")
   }
 
   const workout = await Workout.findById(_id)
@@ -83,6 +92,7 @@ exports.updateWorkout = async (req, res, next) => {
   }
 
   workout.exercise = exercise;
+  workout.time = time;
 
   workout.save((err, workout) => {
     if (err) {

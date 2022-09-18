@@ -74,7 +74,7 @@ export default function EditableRow({ exercise, setError }) {
   const handleClickOutside = (e) => {
     console.log(name)
     const clickInMenu = e.target.id ? e.target.id.includes("react-select") : null
-    if (formRef.current && !name && !editRef.current.contains(e.target) && !formRef.current.contains(e.target) && !clickInMenu) {
+    if (formRef.current && !editRef.current.contains(e.target) && !formRef.current.contains(e.target) && !clickInMenu) {
       setIsEdit(false)
     }
   }

@@ -363,3 +363,14 @@ option {
   display: flex;
   align-items: center;
 }
+
+.time-form-group {
+  position: relative;
+}
+
+.time-suffix {
+  position: absolute;
+  left: 4rem;
+  bottom: .6rem;
+  color: #929191;
+}
