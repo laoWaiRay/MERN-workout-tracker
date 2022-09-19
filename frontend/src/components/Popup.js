@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import ExerciseSelect from './ExerciseSelect'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useWorkoutContext } from '../hooks/useWorkoutContext'
+import TimeInput from './TimeInput'
 
 export default function Popup({ setIsPopupOpen }) {
   const [time, setTime] = useState("")
-  const [timeSuffix, setTimeSuffix] = useState(false)
   const [exercises, setExercises] = useState([])
   const [exercise, setExercise] = useState(null)
   const [error, setError] = useState(null)
@@ -31,14 +31,6 @@ export default function Popup({ setIsPopupOpen }) {
       value: exercise._id
     }
   })
-
-  useEffect(() => {
-    if (time) {
-      setTimeSuffix(true)
-    } else {
-      setTimeSuffix(false)
-    }
-  }, [time])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -70,18 +62,6 @@ export default function Popup({ setIsPopupOpen }) {
     }
   }
 
-  const handleChangeTime = (e) => {
-    const limit = 3;
-
-    if (e.target.value === '1000') {
-      return setTime(999)
-    } else {
-      setTime((prevState) => {
-        return e.target.value.slice(0, limit)
-      })
-    }
-  }
-
   const handleChangeExercise = (e) => {
     setExercise(e.value)
   }
@@ -99,19 +79,10 @@ export default function Popup({ setIsPopupOpen }) {
           />
         </div>
 
-        <div className='form-group time-form-group'>
-          <label htmlFor='time'>Time: </label>
-          <input 
-            id='time'
-            type="number"
-            onChange={ handleChangeTime }
-            value={time}
-            autoComplete="off"
-            min={0}
-            placeholder="minutes"
-          />
-          {timeSuffix && <span className='time-suffix'>minutes</span>}
-        </div>
+        <TimeInput 
+          time={time}
+          setTime={setTime}
+        />
 
         <button>Add</button>
       </form>

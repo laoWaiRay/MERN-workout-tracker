@@ -1,4 +1,5 @@
 const Workout = require("../models/Workout");
+const Exercise = require("../models/Exercise")
 const mongoose = require("mongoose");
 
 // View all workouts
@@ -72,21 +73,31 @@ exports.createWorkout = (req, res, next) => {
 exports.updateWorkout = async (req, res, next) => {
   const user_id = req.user._id;
   const _id = req.params.id;
-  const { exercise, time } = req.body;
+  const { name, time, exerciseID } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(400).json({ error: "Invalid ID" })
   }
 
-  if (!exercise) {
-    res.status(400).json("Must choose an exercise")
+  if (!name) {
+    return res.status(400).json("Must input a name")
   }
 
   if (!time) {
-    res.status(400).json("Must input a time")
+    return res.status(400).json("Must input a time")
   }
 
-  const workout = await Workout.findById(_id)
+  try {
+    const exercise = await Exercise.findById(exerciseID)
+    exercise.name = name;
+    await exercise.save()
+  } catch (err) {
+    console.log(err)
+    return
+  }
+  
+
+  const workout = await Workout.findById(_id).populate("exercise")
   if (!workout) {
     return res.status(400).json({ error: "Workout not found" })
   }
@@ -95,16 +106,15 @@ exports.updateWorkout = async (req, res, next) => {
     return res.status(401).json({ error: "Unauthorized user" })
   }
 
-  workout.exercise = exercise;
   workout.time = time;
 
-  workout.save((err, workout) => {
-    if (err) {
-      res.status(400).json({ error: "Could not update workout" })
-      return next(err)
-    }
+  try {
+    await workout.save()
     return res.status(200).json(workout)
-  })
+  } catch (err) {
+    res.status(400).json({ error: "Could not update workout" })
+    return next(err)
+  }
 }
 
 

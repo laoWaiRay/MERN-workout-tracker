@@ -12,21 +12,6 @@ export default function Home() {
 
   const [data, setData] = useState([]);
 
-
-  useEffect(() => {
-    fetch("/api/workout", {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${user.token}`
-      }
-    })
-      .then(res => res.json())
-      .then(json => {
-        console.log(json)
-      })
-      .catch(err => console.log(err))
-  }, [])
-
   return (
     <>
     <div className='sub-header'>

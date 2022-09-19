@@ -374,3 +374,16 @@ option {
   bottom: .6rem;
   color: #929191;
 }
+
+.editable-form .time-form-group {
+  flex-direction: row;
+}
+
+.editable-form .time-form-group label {
+  display: none;
+}
+
+.editable-form .time-suffix {
+  left: 4rem;
+  bottom: .5rem;
+}

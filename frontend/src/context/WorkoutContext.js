@@ -17,6 +17,12 @@ export const workoutReducer = (state, action) => {
       return {
         workouts: [...newState]
       }
+    case "UPDATE_WORKOUT":
+      const index = state.workouts.findIndex((workout) => workout._id === action.payload._id);
+      state.workouts.splice(index, 1, action.payload);
+      return {
+        workouts: [...state.workouts]
+      }
     default:
       return state
   }

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useWorkoutContext } from '../hooks/useWorkoutContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import Dot from "./Dot"
+import TimeInput from './TimeInput';
 
 export default function EditableWorkoutRow({ workout, setError }) {
   const [isEdit, setIsEdit] = useState(false);
@@ -15,10 +16,6 @@ export default function EditableWorkoutRow({ workout, setError }) {
 
   const handleChangeName = (e) => {
     setName(e.target.value)
-  }
-
-  const handleChangeTime = (e) => {
-    setTime(e.target.value)
   }
 
   const handleSubmit = (e) => {
@@ -36,7 +33,7 @@ export default function EditableWorkoutRow({ workout, setError }) {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${user.token}`
           },
-        body: JSON.stringify({ name, time })
+        body: JSON.stringify({ name, time, exerciseID: workout.exercise[0]._id })
       })
 
       const result = await response.json()
@@ -44,8 +41,7 @@ export default function EditableWorkoutRow({ workout, setError }) {
       if (!response.ok) {
         setError(result.error)
       } else {
-        console.log(result)
-        dispatch({ type: "UPDATE_EXERCISE", payload: result })
+        dispatch({ type: "UPDATE_WORKOUT", payload: result })
         setIsEdit(false)
       }
     }
@@ -81,19 +77,7 @@ export default function EditableWorkoutRow({ workout, setError }) {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      if (!name) {
-        return
-      }
-      fetch("/api/workout/" + workout._id, {
-        method: "PATCH",
-        headers: {
-          "Authorization": `Bearer ${user.token}`
-        },
-        body: JSON.stringify({
-          name,
-          time
-        })
-      })
+      handleSubmit(e)
     }
   }
 
@@ -109,15 +93,13 @@ export default function EditableWorkoutRow({ workout, setError }) {
 
   const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 
-  console.log(workout.exercise[0].color)
-
   return (
-    <tr key={workout._id}>
+    <tr key={workout._id} ref={formRef}>
       <td>{getDate(workout.createdAt).toLocaleDateString(undefined, options)}</td>
       <td>
         {
           isEdit
-            ? <form ref={formRef} className='editable-form' onSubmit={handleSubmit}>
+            ? <form className='editable-form' onSubmit={handleSubmit}>
                 <input 
                   className="editable-input" 
                   value={name} 
@@ -132,13 +114,10 @@ export default function EditableWorkoutRow({ workout, setError }) {
       <td>
         {
           isEdit
-          ? <form ref={formRef} className='editable-form' onSubmit={handleSubmit}>
-              <input 
-                type="number"
-                className="editable-input" 
-                value={time} 
-                onChange={handleChangeTime} 
-                onKeyDown={handleKeyDown}
+          ? <form className='editable-form' onSubmit={handleSubmit}>
+              <TimeInput 
+                time={time}
+                setTime={setTime}
               />
               <button className='editable-form-btn'>Save Changes</button>
             </form>
