@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Popup from './Popup';
 import { useWorkoutContext } from '../hooks/useWorkoutContext';
 import { useAuthContext } from '../hooks/useAuthContext';
+import EditableWorkoutRow from './EditableWorkoutRow';
 
-export default function Table() {
+export default function WorkoutsTable() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { workouts, dispatch } = useWorkoutContext()
   const { user } = useAuthContext()
@@ -18,7 +19,7 @@ export default function Table() {
     .then((result) => {
       dispatch({ type: "SET_WORKOUTS", payload: result })
     })
-  }, [dispatch, user.token, workouts])
+  }, [dispatch, user.token])
 
   const handleClickAddExercise = () => {
     setIsPopupOpen(true)
@@ -27,13 +28,6 @@ export default function Table() {
   const handleClickClosePopup = () => {
     setIsPopupOpen(false)
   }
-
-  const getDate = (dateString) => {
-    const date = new Date(dateString)
-    return date
-  }
-
-  const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 
   return (
     <div className='table'>
@@ -46,7 +40,7 @@ export default function Table() {
             </span>
             Add Workout
           </button>
-          { isPopupOpen ? <Popup handleClickClosePopup={handleClickClosePopup}/> : null }
+          { isPopupOpen ? <Popup setIsPopupOpen={setIsPopupOpen}/> : null }
         </div>
       </div>
       <table>
@@ -62,15 +56,10 @@ export default function Table() {
           {
             workouts.map((workout) => {
               return (
-                <tr key={workout._id}>
-                  <td>{getDate(workout.createdAt).toLocaleDateString(undefined, options)}</td>
-                  <td>{workout.exercise[0].name}</td>
-                  <td>{workout.time} {workout.time === 1 ? "minute" : "minutes"}</td>
-                  <td className='options'>
-                    <button><span className="material-symbols-outlined">edit</span></button>
-                    <button><span className="material-symbols-outlined">delete</span></button>
-                  </td>
-                </tr>
+                <EditableWorkoutRow 
+                  key={workout._id}
+                  workout={workout}
+                />
               )
             })
           }

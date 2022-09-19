@@ -3,7 +3,7 @@ import ExerciseSelect from './ExerciseSelect'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useWorkoutContext } from '../hooks/useWorkoutContext'
 
-export default function Popup(props) {
+export default function Popup({ setIsPopupOpen }) {
   const [time, setTime] = useState("")
   const [timeSuffix, setTimeSuffix] = useState(false)
   const [exercises, setExercises] = useState([])
@@ -66,6 +66,7 @@ export default function Popup(props) {
     }
     if (response.ok) {
       dispatch({ type: "CREATE_WORKOUT", payload: result })
+      setIsPopupOpen(false)
     }
   }
 
@@ -88,7 +89,7 @@ export default function Popup(props) {
   return (
     <div className='popup'>
       <form onSubmit={handleSubmit}>
-      <span className="material-symbols-outlined close" onClick={props.handleClickClosePopup}>close</span>
+      <span className="material-symbols-outlined close" onClick={() => setIsPopupOpen(false)}>close</span>
         <h2>Add a Workout</h2>
         <div className='form-group'>
           <label htmlFor='exercise'>Exercise: </label>

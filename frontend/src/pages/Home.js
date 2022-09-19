@@ -3,7 +3,7 @@ import { useWorkoutContext } from '../hooks/useWorkoutContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import Chart from "../components/Chart"
-import Table from "../components/Table"
+import WorkoutsTable from "../components/WorkoutsTable"
 
 
 export default function Home() {
@@ -37,7 +37,7 @@ export default function Home() {
         <h1>Chart</h1>
         <Chart />
       </div>
-      <Table />
+      <WorkoutsTable />
     </div>
     </>
   )

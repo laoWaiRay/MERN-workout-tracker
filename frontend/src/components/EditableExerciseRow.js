@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useExerciseContext } from '../hooks/useExerciseContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import ColorSelect from './ColorSelect';
-import Dot from "../components/Dot"
+import Dot from "./Dot"
 
-export default function EditableRow({ exercise, setError }) {
+export default function EditableExerciseRow({ exercise, setError }) {
   const [isEdit, setIsEdit] = useState(false);
   const [name, setName] = useState(exercise.name)
   const [color, setColor] = useState(null);

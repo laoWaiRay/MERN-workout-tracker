@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useExerciseContext } from '../hooks/useExerciseContext'
-import EditableRow from './EditableRow';
+import EditableExerciseRow from './EditableExerciseRow';
 
 export default function ExercisesTable({ exercises, error, setError }) {
   const { dispatch } = useExerciseContext()
@@ -22,7 +22,7 @@ export default function ExercisesTable({ exercises, error, setError }) {
           { exercises &&
             exercises.map((exercise) => {
               return (
-                <EditableRow 
+                <EditableExerciseRow 
                   key={exercise._id}
                   exercise={exercise}
                   setError={setError}

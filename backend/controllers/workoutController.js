@@ -42,11 +42,11 @@ exports.createWorkout = (req, res, next) => {
   const { exercise, time } = req.body;
 
   if (!exercise) {
-    res.status(400).json("Must choose an exercise")
+    return res.status(400).json("Must choose an exercise")
   }
 
   if (!time) {
-    res.status(400).json("Must input a time")
+    return res.status(400).json("Must input a time")
   }
 
   const workout = new Workout({
@@ -60,7 +60,11 @@ exports.createWorkout = (req, res, next) => {
       res.status(400).json({ error: "Could not save workout" })
       return next(err)
     }
-    res.status(200).json(newWorkout)
+    Workout.findById(newWorkout._id)
+      .populate("exercise")
+      .exec((err, workout) => {
+        res.status(200).json(workout)
+      })
   })
 }
 
