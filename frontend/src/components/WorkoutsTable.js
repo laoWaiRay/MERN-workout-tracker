@@ -25,10 +25,6 @@ export default function WorkoutsTable() {
     setIsPopupOpen(true)
   }
 
-  const handleClickClosePopup = () => {
-    setIsPopupOpen(false)
-  }
-
   return (
     <div className='table'>
       <div className='table-header'>

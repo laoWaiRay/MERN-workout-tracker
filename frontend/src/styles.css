@@ -165,8 +165,12 @@ form h1 {
   width: 80rem;
 }
 
-.chart-container h1 {
+.chart-container h1, .chart-container h2 {
   text-align: center;
+}
+
+.chart-container h2 {
+  margin: 1rem 0 1rem 0;
 }
 
 .error {
@@ -386,4 +390,38 @@ option {
 .editable-form .time-suffix {
   left: 4rem;
   bottom: .5rem;
+}
+
+.chevron-btn {
+  border-radius: 50%;
+  /* border: 1px solid #222; */
+  border: 0;
+  box-shadow: 0 0 2px #000;
+  color: #222;
+  margin: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.chevron-btn:hover {
+  cursor: pointer;
+}
+
+.chevron {
+  font-size: 4rem;
+}
+
+.chart-header {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 1rem 0;
+  margin-bottom: 0;
+}
+
+.chart-header h1 {
+  margin: 0;
 }

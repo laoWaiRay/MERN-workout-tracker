@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useWorkoutContext } from "../hooks/useWorkoutContext";
+import { useGetWeekDates } from "../hooks/useGetWeekDates";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,24 +33,70 @@ const options = {
 
 const labels = ['Sunday', 'Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Squat',
-      data: [30, 0 , 60, 0, 45],
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Bench Press',
-      data: [0, 60, 60, 90],
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
 
-function Chart() {
-  return <Bar options={options} data={data} />;
+
+function Chart({ modifier }) {
+  const { workouts } = useWorkoutContext()
+  const [data, setData] = useState({
+    labels,
+    datasets: []
+  })
+  const getWeekDates =  useGetWeekDates()
+
+  useEffect(() => {
+    const [startDate, endDate] = getWeekDates(modifier * 7)
+    const weeklyWorkouts = workouts.filter((workout) => {
+      const date = new Date(workout.updatedAt)
+      console.log(date > startDate && date < endDate)
+      return (date > startDate && date < endDate)
+    })
+
+    const newDatasets = []
+
+    weeklyWorkouts.forEach((workout) => {
+      if (newDatasets.length === 0) {
+        newDatasets.push({
+          label: workout.exercise[0].name,
+          data: [0,0,0,0,0,0,0],
+          backgroundColor: workout.exercise[0].color
+        })
+      } else {
+        let isSeen = false
+        newDatasets.forEach((dataset) => {
+          if (dataset.label === workout.exercise[0].name) {
+            isSeen = true
+          }
+        })
+        if (isSeen === false) {
+          newDatasets.push({
+            label: workout.exercise[0].name,
+            data: [0,0,0,0,0,0,0],
+            backgroundColor: workout.exercise[0].color
+          })
+        }
+      }
+    })
+
+    weeklyWorkouts.forEach((workout) => {
+      const day = new Date(workout.createdAt).getDay()
+      newDatasets.forEach((dataset) => {
+        if (dataset.label === workout.exercise[0].name) {
+          dataset.data[day] += workout.time
+        }
+      })
+    })
+
+    console.log(newDatasets)
+
+    setData({
+      labels,
+      datasets: newDatasets
+    })
+    
+  }, [workouts, modifier])
+
+  return <Bar options={options} data={data} />
+  
 }
 
 export default Chart;
