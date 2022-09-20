@@ -27,6 +27,7 @@ export default function Layout({ children }) {
         <div className='nav-container'>
         <Link to="/">Home</Link>
         <Link to="/exercises">Exercises</Link>
+        <Link to="/goals">Goals</Link>
         <button onClick={handleClick}>Log Out</button>
       </div>
       }

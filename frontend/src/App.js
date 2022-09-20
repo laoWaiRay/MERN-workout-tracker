@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import { useAuthContext } from "./hooks/useAuthContext"
 
@@ -7,6 +7,7 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 import Exercises from "./pages/Exercises"
+import Goals from "./pages/Goals"
 
 function App() {
   const { user, isLoaded } = useAuthContext();
@@ -28,6 +29,7 @@ function App() {
           {/* user is initially set to null, and is only updated through a useEffect AFTER the
               components are rendered, therefore on page refresh user will always be null
           */}
+          <Route path="/goals" element={user || token ? <Goals /> : <Navigate to="/login" />}></Route>
           <Route path="/exercises" element={user || token ? <Exercises /> : <Navigate to="/login" />}></Route>
         </Routes>
       </Layout>
