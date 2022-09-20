@@ -55,22 +55,35 @@ exports.createGoal = (req, res, next) => {
     frequency = 0;
   }
 
-  const goal = new Goal({
-    goal_type,
-    time,
-    frequency,
-    achieved: false,
-    user_id,
-    exercise
+
+  const refId = mongoose.Types.ObjectId(exercise)
+  console.log(refId)
+
+  Goal.find({ exercise: refId }, (err, data) => {
+    if (data.length != 0) {
+      res.status(400).json({ error: "Goal for selected exercise already exists" })
+      return
+    }
+
+    const goal = new Goal({
+      goal_type,
+      time,
+      frequency,
+      achieved: false,
+      user_id,
+      exercise
+    })
+  
+    goal.save((err, newGoal) => {
+      if (err) { 
+        res.status(400).json({ error: "Could not save goal" })
+        return next(err)
+      }
+      res.status(200).json(newGoal)
+    })
   })
 
-  goal.save((err, newGoal) => {
-    if (err) { 
-      res.status(400).json({ error: "Could not save goal" })
-      return next(err)
-    }
-    res.status(200).json(newGoal)
-  })
+  
 }
 
 exports.updateGoal = async (req, res, next) => {

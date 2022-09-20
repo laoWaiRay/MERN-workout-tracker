@@ -5,18 +5,19 @@ import TimeInput from '../components/TimeInput'
 
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useGoalContext } from '../hooks/useGoalContext'
+import GoalsTable from '../components/GoalsTable'
 
 export default function Goals() {
   const { user, isLoaded } = useAuthContext()
   const { dispatch } = useGoalContext()
 
+  const [goals, setGoals] = useState([])
   const [goalType, setGoalType] = useState(null)
   const [time, setTime] = useState(0)
-  const [frequency, setFrequency] = useState(null)
+  const [frequency, setFrequency] = useState(0)
   const [exercises, setExercises] = useState(null)
   const [exercise, setExercise] = useState(null)  
   const [error, setError] = useState(null)
-
 
   useEffect(() => {
     if (isLoaded) {
@@ -29,9 +30,19 @@ export default function Goals() {
       .then((result) => {
         setExercises(result)
       })
+
+      fetch("/api/goals", {
+        headers: {
+          "Authorization": `Bearer ${user.token}`
+        }
+      })
+      .then((response) => response.json())
+      .then((result) => {
+        setGoals(result)
+      })
     }
   }, [user, isLoaded])
-  
+
   let exerciseOptions
 
   if (exercises) {
@@ -62,13 +73,12 @@ export default function Goals() {
     setGoalType(e.value)
   }
   const handleChangeFrequency = (e) => {
-    setFrequency(e.value)
+    setFrequency(e.target.value)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
-    console.log("submit")
 
     if (!exercise || !goalType || (!time && !frequency)) {
       setError("Fields must not be empty")
@@ -94,6 +104,9 @@ export default function Goals() {
         frequency 
       })
     })
+    .catch((err) => {
+      console.log(err)
+    })
 
     const result = await response.json()
 
@@ -103,6 +116,7 @@ export default function Goals() {
     }
     if (response.ok) {
       dispatch({ type: "CREATE_GOAL", payload: result })
+      e.target.reset()
     }
   }
 
@@ -148,6 +162,11 @@ export default function Goals() {
         <button>Set Goal</button>
         {error && <div className='error'>{error}</div>}
       </form>
+      <GoalsTable 
+        goals={goals}
+        error={error}
+        setError={setError}
+      />
     </div>
   )
 }

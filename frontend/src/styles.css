@@ -94,7 +94,7 @@ justify-content: space-between;
   padding: 1.6rem 2rem;
 }
 
-form.signup, form.login, form.exercises {
+form.signup, form.login, form.exercises, form.goals {
   background-color: var(--light-grey);
   width: 50rem;
   justify-content: center;
@@ -102,6 +102,15 @@ form.signup, form.login, form.exercises {
   padding: 2rem;
   border-radius: 6px;
   text-align: center;
+}
+
+form.goals {
+  width: 19rem;
+  padding: 0 6rem;
+}
+
+.goals .error {
+  margin: 2rem 0;
 }
 
 form.exercises {
@@ -449,4 +458,12 @@ input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: button;
     width: 1em;
     opacity: .8;
+}
+
+.success {
+  color: green;
+}
+
+.danger {
+  color: red;
 }
