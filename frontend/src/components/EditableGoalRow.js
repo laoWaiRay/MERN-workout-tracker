@@ -1,9 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import Select from 'react-select'
 import { useGoalContext } from '../hooks/useGoalContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useWorkoutContext } from '../hooks/useWorkoutContext';
 import { useGetWeekDates } from '../hooks/useGetWeekDates';
+import ExerciseSelect from './ExerciseSelect';
+import TimeInput from './TimeInput';
 
 import Dot from "./Dot"
 
@@ -18,12 +20,13 @@ const goalTypeOptions = [
   }
 ]
 
-export default function EditableGoalRow({ goal, setError }) {
+export default function EditableGoalRow({ goal, setError, exercises }) {
   const [isEdit, setIsEdit] = useState(false);
   const [goalType, setGoalType] = useState(goal.goal_type)
   const [time, setTime] = useState(goal.time)
   const [frequency, setFrequency] = useState(goal.frequency)
-  const [achieved, setAchieved] = useState(goal.achieved)
+  const [exercise, setExercise] = useState(goal.exercise[0]._id)
+  const [remaining, setRemaining] = useState(0)
 
   const { user } = useAuthContext()
   const { dispatch: dispatchGoal } = useGoalContext()
@@ -45,42 +48,49 @@ export default function EditableGoalRow({ goal, setError }) {
     })
   }, [dispatchWorkout, user.token])
 
-  // const handleChange = (e) => {
-  //   setName(e.target.value)
-  //   console.log(name)
-  // }
+  const handleSubmit = (e) => {
+    e.preventDefault()
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
+    const fetchData = async () => {
+      if (!goalType || !exercise || (!time && !frequency)) {
+        return
+      }
 
-  //   const fetchData = async () => {
-  //     if (!name || !color) {
-  //       setError("Fields must not be empty")
-  //       return
-  //     }
+      const response = await fetch("/api/goals/" + goal._id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${user.token}`
+        },
+        body: JSON.stringify({
+          goal_type: goalType,
+          time,
+          frequency,
+          exercise,
+        })
+      })
 
-  //     const response = await fetch("/api/exercise/" + exercise._id, {
-  //       method: "PATCH",
-  //       headers: {
-  //           "Content-Type": "application/json",
-  //           "Authorization": `Bearer ${user.token}`
-  //         },
-  //       body: JSON.stringify({ name, color })
-  //     })
+      const result = await response.json()
 
-  //     const result = await response.json()
+      if (!response.ok) {
+        setError(result.error)
+      } else {
+        console.log(result)
+        dispatchGoal({ type: "UPDATE_GOAL", payload: result })
+        setIsEdit(false)
+      }
+    }
 
-  //     if (!response.ok) {
-  //       setError(result.error)
-  //     } else {
-  //       console.log(result)
-  //       dispatch({ type: "UPDATE_EXERCISE", payload: result })
-  //       setIsEdit(false)
-  //     }
-  //   }
+    fetchData()
+  } 
 
-  //   fetchData()
-  // } 
+  const handleChangeExercise = (e) => {
+    setExercise(e.value)
+  }
+
+  const handleChangeFrequency = (e) => {
+    setFrequency(e.target.value)
+  }
 
   const handleClickEdit = () => {
     setIsEdit(true)
@@ -102,7 +112,7 @@ export default function EditableGoalRow({ goal, setError }) {
     dispatchGoal({ type: "DELETE_GOAL", payload: goal })
   }
 
-  const findRemaining = (exercise, goalType) => {
+  const findRemaining = useCallback((exercise, goalType) => {
     const [startDate, endDate] = getWeekDates()
     let workoutTotalTime = 0;
     let workoutTotalFrequency = 0;
@@ -125,83 +135,118 @@ export default function EditableGoalRow({ goal, setError }) {
     } else {
       return workoutTotalFrequency
     }
+  }, [getWeekDates, workouts])
+
+  const handleClickOutside = (e) => {
+    const clickInMenu = e.target.id ? e.target.id.includes("react-select") : null
+    if (formRef.current && !editRef.current.contains(e.target) && !formRef.current.contains(e.target) && !clickInMenu) {
+      setIsEdit(false)
+    }
   }
 
-  // const handleClickOutside = (e) => {
-  //   console.log(name)
-  //   const clickInMenu = e.target.id ? e.target.id.includes("react-select") : null
-  //   if (formRef.current && !editRef.current.contains(e.target) && !formRef.current.contains(e.target) && !clickInMenu) {
-  //     setIsEdit(false)
-  //   }
-  // }
-
-  // const handleKeyDown = (e) => {
-  //   if (e.key === "Enter") {
-  //     if (!name) {
-  //       return
-  //     }
-  //     fetch("/api/exercise/" + exercise._id, {
-  //       method: "PATCH",
-  //       headers: {
-  //         "Authorization": `Bearer ${user.token}`
-  //       },
-  //       body: JSON.stringify({
-  //         name,
-  //         color
-  //       })
-  //     })
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   document.addEventListener('click', handleClickOutside)
-  //   return () => {document.removeEventListener('click', handleClickOutside)}
-  // }, [])
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside)
+    return () => {document.removeEventListener('click', handleClickOutside)}
+  }, [])
 
   const handleChangeGoalType = (e) => {
     setGoalType(e.value)
   }
 
-  let remaining
+  useEffect(() => {
+    let remainingData
 
-  if (goal.goal_type === "time") {
-    remaining = goal.time - findRemaining(goal.exercise, goal.goal_type)
-  } else {
-    remaining = goal.frequency - findRemaining(goal.exercise, goal.goal_type)
-  }
+    if (goalType === "time") {
+      setFrequency(0)
+      remainingData = time - findRemaining(goal.exercise, goalType)
+    } else {
+      setTime(0)
+      remainingData = frequency - findRemaining(goal.exercise, goalType)
+    }
+
+    setRemaining(remainingData)
+  }, [goalType, findRemaining, time, frequency])
+
+  const formattedGoalType = goal.goal_type[0].toUpperCase() + goal.goal_type.slice(1)
 
   return (
-    <tr>
+    <tr ref={formRef}>
       <td>
         {
           isEdit
-          ? <form ref={formRef} className='editable-form' onSubmit={() => {}}>
-              <div className='form-group'>
-                <label> Goal Type: </label>
-                <Select 
-                  options={goalTypeOptions}
-                  onChange={handleChangeGoalType}
-                />
-              </div>
-              <button className='editable-form-btn'>Save Changes</button>
-            </form>
+          ? <ExerciseSelect 
+            exercises={exercises}
+            onChange={handleChangeExercise}
+            defaultValue={{label: goal.exercise[0].name, value: goal.exercise[0]._id}}
+          />
           : <span className='dot'>{goal.exercise[0].name} <Dot color={goal.exercise[0].color} /> </span>
         }
       </td>
       <td>
-        <span>{goal.goal_type[0].toUpperCase() + goal.goal_type.slice(1)}</span>
-      </td>
-      <td>
-        <span>{goal.goal_type === "time" ? `${goal.time} minutes` : `${goal.frequency} times`}</span>
-      </td>
-      <td>
         {
-          <span className={remaining <= 0 ? "success" : "danger"}> 
-            {remaining} 
-          </span>
+          isEdit
+          ? <form className='editable-form' onSubmit={() => {}}>
+              <div className='form-group flex-row'>
+                <Select 
+                  options={goalTypeOptions}
+                  onChange={handleChangeGoalType}
+                  defaultValue={{label: formattedGoalType, value: goalType}}
+                />
+              </div>
+            </form>
+          : <span>{formattedGoalType}</span>
         }
       </td>
-
+      <td className={ goalType === "time" ? "editable-form-time" : null}>
+        {
+          isEdit
+          ? <form 
+              className="editable-form"
+              onSubmit={() => {}}
+            >
+              {
+                goalType === "time"
+                &&
+                <TimeInput 
+                  time={time}
+                  setTime={setTime}
+                  noLabel={true}
+                />
+              }
+              {
+                goalType === "frequency"
+                &&
+                <div className='form-group time-form-group'>
+                  <input 
+                    className='frequency-input'
+                    type="number"
+                    onChange={handleChangeFrequency}
+                    value={frequency}
+                    placeholder="# times / week"
+                    min="0"
+                  />
+                </div>
+              }
+            </form>
+          : <span>{goal.goal_type === "time" ? `${goal.time} minutes` : `${goal.frequency} times`}</span>
+        }
+      </td>
+      
+      <td>
+        <form className='editable-form editable-form-last' onSubmit={handleSubmit}>
+          {
+            <span className={remaining <= 0 ? "success" : "danger"}> 
+              {remaining} {goalType === "time" ? remaining === 1 ? "minute" : "minutes" : remaining === 1 ? "time" : "times"}
+            </span>
+          }
+          {
+            isEdit
+            ? <button className='editable-form-btn'>Save</button>
+            : null
+          }
+          
+        </form>
+      </td>
 
       <td className='options'>
         <span>

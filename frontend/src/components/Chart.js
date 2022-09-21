@@ -47,7 +47,6 @@ function Chart({ modifier }) {
     const [startDate, endDate] = getWeekDates(modifier * 7)
     const weeklyWorkouts = workouts.filter((workout) => {
       const date = new Date(workout.updatedAt)
-      console.log(date > startDate && date < endDate)
       return (date > startDate && date < endDate)
     })
 

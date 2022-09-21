@@ -74,7 +74,7 @@ export default function Popup({ setIsPopupOpen }) {
         <div className='form-group'>
           <label htmlFor='exercise'>Exercise: </label>
           <ExerciseSelect 
-            options={options}
+            exercises={exercises}
             onChange={handleChangeExercise}
           />
         </div>

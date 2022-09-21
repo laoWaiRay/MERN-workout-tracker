@@ -79,11 +79,13 @@ exports.createGoal = (req, res, next) => {
         res.status(400).json({ error: "Could not save goal" })
         return next(err)
       }
-      res.status(200).json(newGoal)
+      Goal.findById(newGoal._id)
+        .populate("exercise")
+        .exec((err, goal) => {
+          res.status(200).json(goal)
+        })
     })
   })
-
-  
 }
 
 exports.updateGoal = async (req, res, next) => {
@@ -97,7 +99,7 @@ exports.updateGoal = async (req, res, next) => {
   }
 
   if (!goal_type || (!time && !frequency) || !exercise) {
-    res.status(400).json("Missing field")
+    return res.status(400).json("Missing field")
   }
 
   if (!time) {
@@ -132,7 +134,16 @@ exports.updateGoal = async (req, res, next) => {
       res.status(400).json({ error: "Could not update goal" })
       return next(err)
     }
-    return res.status(200).json(goal)
+    Goal.findById(goal._id)
+    .populate("exercise")
+    .sort({ createdAt: -1 })
+    .exec(function(err, goals) {
+      if (err) { 
+        res.status(400).json({ error: "Could not find goals" })
+        return next(err) 
+      };
+      res.status(200).json(goals)
+    })
   })
 }
 

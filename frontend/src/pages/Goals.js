@@ -9,9 +9,8 @@ import GoalsTable from '../components/GoalsTable'
 
 export default function Goals() {
   const { user, isLoaded } = useAuthContext()
-  const { dispatch } = useGoalContext()
+  const { goals, dispatch } = useGoalContext()
 
-  const [goals, setGoals] = useState([])
   const [goalType, setGoalType] = useState(null)
   const [time, setTime] = useState(0)
   const [frequency, setFrequency] = useState(0)
@@ -38,21 +37,10 @@ export default function Goals() {
       })
       .then((response) => response.json())
       .then((result) => {
-        setGoals(result)
+        dispatch({ type: "SET_GOALS", payload: result })
       })
     }
-  }, [user, isLoaded])
-
-  let exerciseOptions
-
-  if (exercises) {
-    exerciseOptions = exercises.map(exercise => {
-      return {
-        label: exercise.name,
-        value: exercise._id
-      }
-    })
-  }
+  }, [user, isLoaded, dispatch])
 
   const goalTypeOptions = [
     {
@@ -116,6 +104,7 @@ export default function Goals() {
     }
     if (response.ok) {
       dispatch({ type: "CREATE_GOAL", payload: result })
+      console.log(result)
       e.target.reset()
     }
   }
@@ -128,7 +117,7 @@ export default function Goals() {
           <label> Exercise: </label>
           <ExerciseSelect 
             onChange={handleChangeExercise}
-            options={exerciseOptions}
+            exercises={exercises}
           />
         </div>
         <div className='form-group'>
@@ -152,10 +141,12 @@ export default function Goals() {
 
           <div className='form-group time-form-group'>
             <label htmlFor='time'>Weekly Goal: </label>
-            <input 
+            <input
+              // className='frequency-input' 
               type="number"
               onChange={handleChangeFrequency}
               placeholder="# times / week"
+              min="0"
             />
           </div>
         }
@@ -166,6 +157,7 @@ export default function Goals() {
         goals={goals}
         error={error}
         setError={setError}
+        exercises={exercises}
       />
     </div>
   )

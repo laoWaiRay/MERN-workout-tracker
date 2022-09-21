@@ -11,18 +11,21 @@ export const goalReducer = (state, action) => {
       }
     case "CREATE_GOAL":
       return {
-        goals: [action.payload, ...state.goals]
+        goals: [action.payload, ...state.goals],
+        isLoaded: true
       }
     case "DELETE_GOAL":
       const newState = state.goals.filter(goal => goal._id !== action.payload._id)
       return {
-        goals: [...newState]
+        goals: [...newState],
+        isLoaded: true
       }
     case "UPDATE_GOAL":
       const index = state.goals.findIndex((goal) => goal._id === action.payload._id);
       state.goals.splice(index, 1, action.payload);
       return {
-        goals: [...state.goals]
+        goals: [...state.goals],
+        isLoaded: true
       }
     default:
       return state

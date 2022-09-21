@@ -1,7 +1,7 @@
 import React from 'react'
 import EditableGoalRow from './EditableGoalRow';
 
-export default function GoalsTable({ goals, error, setError }) {
+export default function GoalsTable({ goals, error, setError, exercises }) {
 
   return (
     <div className='table goals-table'>
@@ -27,6 +27,7 @@ export default function GoalsTable({ goals, error, setError }) {
                   key={goal._id}
                   goal={goal}
                   setError={setError}
+                  exercises={exercises}
                 />
               )
             }) 

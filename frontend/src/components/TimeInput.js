@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-export default function TimeInput({ time, setTime }) {
+export default function TimeInput({ time, setTime, noLabel }) {
   const [timeSuffix, setTimeSuffix] = useState(false)
 
   const handleChangeTime = (e) => {
@@ -16,7 +16,7 @@ export default function TimeInput({ time, setTime }) {
   }
 
   useEffect(() => {
-    if (time) {
+    if (time || time === 0) {
       setTimeSuffix(true)
     } else {
       setTimeSuffix(false)
@@ -25,14 +25,19 @@ export default function TimeInput({ time, setTime }) {
 
   return (
     <div className='form-group time-form-group'>
-      <label htmlFor='time'>Time: </label>
+      {
+        !noLabel 
+        ? <label htmlFor='time'>Time: </label> 
+        : null
+      }
+      
       <input 
         id='time'
         type="number"
         onChange={ handleChangeTime }
         value={time}
         autoComplete="off"
-        min={0}
+        min="0"
         placeholder="minutes"
       />
       {timeSuffix && <span className='time-suffix'>{time === "1" ? "minute" : "minutes"}</span>}

@@ -109,6 +109,14 @@ form.goals {
   padding: 0 6rem;
 }
 
+form.exercises {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40rem;
+}
+
 .goals .error {
   margin: 2rem 0;
 }
@@ -199,7 +207,7 @@ form h1 {
   /* background-color: pink; */
 }
 
-.exercises-table {
+.exercises-table, .goals-table {
   width: 70%;
   max-width: 1000px;
   padding-top: 0;
@@ -272,7 +280,6 @@ td.options button {
 td.options button:hover {
   cursor: pointer;
 }
-
 /* Google Material Icons */
 
 .material-symbols-outlined {
@@ -355,7 +362,8 @@ option {
 }
 
 .editable-input-select {
-  display: inline-block;
+  display: flex;
+  align-items: center;
 }
 
 .editable-input-select label, .editable-input-select label + * {
@@ -392,13 +400,22 @@ option {
   flex-direction: row;
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .editable-form .time-form-group label {
   display: none;
 }
 
 .editable-form .time-suffix {
   left: 4rem;
-  bottom: .5rem;
+  bottom: .8rem;
+}
+
+.editable-form-last {
+  display: flex;
+  justify-content: space-between;
 }
 
 .chevron-btn {
@@ -435,8 +452,8 @@ option {
   margin: 0;
 }
 
-/* Homepage exercise select */
-.table .css-b62m3t-container {
+/* React-select select stuff */
+.css-b62m3t-container {
   width: 100%;
 }
 
@@ -444,13 +461,9 @@ option {
   text-align: center;
 }
 
-/* Goals page selects */
-.goals-container .css-b62m3t-container {
-  width: 100%;
-}
-
 input#time {
   padding-left: 1rem;
+  width: 100%;
 }
 
 input[type="number"]::-webkit-outer-spin-button, 
@@ -466,4 +479,12 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .danger {
   color: red;
+}
+
+.frequency-input {
+  width: 10rem;
+}
+
+.editable-form-time {
+  width: 13rem;
 }
