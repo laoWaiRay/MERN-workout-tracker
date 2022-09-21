@@ -1,6 +1,6 @@
 :root {
-  --main-color: #2f91d2;
-  --main-color-light: #c4deea;
+  --main-color: #2785c3;
+  --main-color-light: #b9dbea;
   --light-grey: #f4f3f3;
   --white: #ffffff;
   --secondary-color: #3c6e71;
@@ -48,7 +48,7 @@ header h1 {
 .nav-container a {
   font-size: 2rem;
   margin-left: 2rem;
-  color: var(--secondary-color)
+  color: #000;
 }
 
 .nav-container button {
@@ -56,7 +56,11 @@ header h1 {
   margin-left: 2rem;
   background-color: transparent;
   border: 0;
-  color: var(--secondary-color);
+  color: #000;
+}
+
+.nav-container button:hover {
+  cursor: pointer;
 }
 
 footer {
