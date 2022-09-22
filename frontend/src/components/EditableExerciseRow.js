@@ -7,7 +7,7 @@ import Dot from "./Dot"
 export default function EditableExerciseRow({ exercise, setError }) {
   const [isEdit, setIsEdit] = useState(false);
   const [name, setName] = useState(exercise.name)
-  const [color, setColor] = useState(null);
+  const [color, setColor] = useState(exercise.color);
   const { dispatch } = useExerciseContext()
   const { user } = useAuthContext()
 
@@ -21,6 +21,7 @@ export default function EditableExerciseRow({ exercise, setError }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setError(null)
 
     const fetchData = async () => {
       if (!name || !color) {
@@ -66,9 +67,16 @@ export default function EditableExerciseRow({ exercise, setError }) {
         "Authorization": `Bearer ${user.token}`
       }
     })
+    .then((response) => {
+      if (!response.ok) {
+        response.json().then((result) => { setError(result.error) })
+      } else {
+        dispatch({ type: "DELETE_EXERCISE", payload: exercise })
+      }
+    })
     .catch(e => console.log(e))
 
-    dispatch({ type: "DELETE_EXERCISE", payload: exercise })
+    
   }
 
   const handleClickOutside = (e) => {

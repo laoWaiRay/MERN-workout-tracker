@@ -1,5 +1,7 @@
 const Exercise = require("../models/Exercise");
-const mongoose = require("mongoose")
+const Workout = require("../models/Workout");
+const Goal = require("../models/Goal")
+const mongoose = require("mongoose");
 
 exports.listExercises = (req, res, next) => {
   const user_id = req.user._id;
@@ -82,6 +84,14 @@ exports.deleteExercise = async (req, res, next) => {
     return res.status(401).json({ error: "Unauthorized user" })
   }
 
+  const workout = await Workout.findOne({ exercise: _id })
+  const goal = await Goal.findOne({ exercise: _id })
+
+  if (workout || goal) {
+    console.log("Cannot delete")
+    return res.status(400).json({ error: "Cannot delete exercise - currently in use by workout or goal" })
+  }
+  
   Exercise.findByIdAndRemove({ _id }, (err, removedExercise) => {
     if (err) { return next(err) }
     res.status(200).json({ removedExercise })
