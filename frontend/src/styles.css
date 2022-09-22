@@ -492,3 +492,8 @@ input[type="number"]::-webkit-inner-spin-button {
 .editable-form-time {
   width: 13rem;
 }
+
+a.active {
+  color: var(--main-color);
+  font-weight: 700;
+}

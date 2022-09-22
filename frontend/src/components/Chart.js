@@ -85,8 +85,6 @@ function Chart({ modifier }) {
       })
     })
 
-    console.log(newDatasets)
-
     setData({
       labels,
       datasets: newDatasets

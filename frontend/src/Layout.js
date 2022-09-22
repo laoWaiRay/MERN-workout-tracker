@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { useAuthContext } from './hooks/useAuthContext'
 import { useLogout } from "./hooks/useLogout"
 
@@ -20,14 +20,14 @@ export default function Layout({ children }) {
     <nav>
       {!user ? 
         <div className='nav-container'>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
+          <NavLink to="/login">Login</NavLink>
+          <NavLink to="/signup">Sign Up</NavLink>
         </div>
         :
         <div className='nav-container'>
-        <Link to="/">Home</Link>
-        <Link to="/exercises">Exercises</Link>
-        <Link to="/goals">Goals</Link>
+        <NavLink to="/" end>Home</NavLink>
+        <NavLink to="/exercises">Exercises</NavLink>
+        <NavLink to="/goals">Goals</NavLink>
         <button onClick={handleClick}>Log Out</button>
       </div>
       }
